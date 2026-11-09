@@ -24,8 +24,11 @@ TEXT_FAINT = "#6e6e76"
 ACCENT = "#f0a8c2"
 ACCENT_SHADE_LIGHT = "#c27f99"
 ACCENT_SHADE_DARK = "#8c5870"
-ON_ACCENT = "#0b0b0d"
-ON_ACCENT_MUTED = "#37450f"
+
+# Ova's brand, sampled from its app icon
+OVA_TILE_START = "#fee4ec"
+OVA_TILE_END = "#fccbc6"
+OVA_MAGENTA = "#b20066"
 
 # Isometric block faces
 FACE_TOP = "#1d1d21"

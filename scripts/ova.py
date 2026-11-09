@@ -1,19 +1,18 @@
 """Generate assets/ova.svg: the callout that points visitors at Ova.
 
-This is the only solid-accent panel on the profile, so it is the first thing the
-eye lands on after the banner. The ring is a cycle drawn with uneven ticks, because
-Ova treats irregularity as the default rather than the exception.
+Ova's own app icon carries the panel. It is the only warm, light object on an
+otherwise dark profile, so it draws the eye without needing to shout. The letters
+of the wordmark ripple gently, one after another, and then rest.
 """
 
-from math import cos, radians, sin
+import json
 
 import theme as t
 from text import outline, text_path
 
-HEIGHT = 280
+HEIGHT = 264
 
 EYEBROW = "NOW BUILDING  /  TEAM PROJECT"
-NAME = "Ova"
 DESCRIPTION = (
     "A PCOS-focused cycle tracker that treats",
     "irregularity as the default, not the exception.",
@@ -22,83 +21,96 @@ DESCRIPTION = (
 # Replace with the domain once the site is live, and link the image in README.md.
 SITE_LABEL = "SITE COMING SOON"
 
-RING_CENTER = (1088, 140)
-RING_INNER_RADIUS = 74
-# One tick per day of a cycle. The uneven lengths are the point of the drawing.
-TICK_LENGTHS = (
-    18, 34, 12, 26, 42, 16, 22, 38, 14, 30, 20, 46, 12, 24,
-    36, 18, 28, 14, 40, 22, 16, 32, 44, 12, 26, 20, 34, 16,
-)
+WORDMARK = t.ROOT / "scripts" / "data" / "ova_wordmark.json"
+
+TILE_SIZE = 176
+TILE_RADIUS = 40
+TILE_X = t.PANEL_PADDING
+TILE_Y = (HEIGHT - TILE_SIZE) / 2
+COPY_X = TILE_X + TILE_SIZE + 48
 
 
-def ring() -> str:
-    cx, cy = RING_CENTER
-    ticks: list[str] = []
-    for index, length in enumerate(TICK_LENGTHS):
-        angle = radians(index * 360 / len(TICK_LENGTHS) - 90)
-        inner, outer = RING_INNER_RADIUS, RING_INNER_RADIUS + length
-        ticks.append(
-            f'<line x1="{cx + inner * cos(angle):.1f}" y1="{cy + inner * sin(angle):.1f}" '
-            f'x2="{cx + outer * cos(angle):.1f}" y2="{cy + outer * sin(angle):.1f}"/>'
-        )
+def logo_tile() -> str:
+    wordmark = json.loads(WORDMARK.read_text(encoding="utf-8"))
+    scale = TILE_SIZE / wordmark["size"]
+    letters = "".join(
+        f'<path class="letter" style="animation-delay:{index * 0.22:.2f}s" fill-rule="evenodd" d="{d}"/>'
+        for index, d in enumerate(wordmark["letters"])
+    )
     return (
-        f'<g class="ring" stroke="{t.ON_ACCENT}" stroke-width="5" stroke-linecap="round">'
-        f'{"".join(ticks)}</g>'
-        f'<circle cx="{cx}" cy="{cy}" r="9" fill="{t.ON_ACCENT}"/>'
+        f'<rect x="{TILE_X}" y="{TILE_Y}" width="{TILE_SIZE}" height="{TILE_SIZE}" '
+        f'rx="{TILE_RADIUS}" fill="url(#tile)"/>'
+        f'<g transform="translate({TILE_X} {TILE_Y}) scale({scale:.4f})" fill="{t.OVA_MAGENTA}">{letters}</g>'
     )
 
 
-def status_pill(x: float, baseline: float) -> str:
-    height = 46
-    y = baseline - height
-    padding = 22
-    dot_x = x + padding + 5
-    text_x = dot_x + 18
+def status_pill(right: float, center_y: float) -> str:
+    height = 42
+    padding = 20
+    size = 16
+    tracking = 0.08
+    label_width = outline(SITE_LABEL, x=0, y=0, size=size, family="mono", weight=500, tracking=tracking).width
+    width = padding + 10 + 12 + label_width + padding
+    x = right - width
+    y = center_y - height / 2
+    dot_x = x + padding + 4
     label = outline(
-        SITE_LABEL, x=text_x, y=y + 30, size=18, family="mono", weight=600, tracking=0.08
+        SITE_LABEL, x=x + padding + 22, y=center_y + 5.6, size=size, family="mono", weight=500, tracking=tracking
     )
-    width = text_x + label.width + padding - x
     return "".join(
         (
-            f'<rect x="{x:.1f}" y="{y}" width="{width:.1f}" height="{height}" '
-            f'rx="{height / 2}" fill="{t.ON_ACCENT}"/>',
-            f'<circle class="pulse" cx="{dot_x:.1f}" cy="{y + height / 2}" r="5" fill="{t.ACCENT}"/>',
+            f'<rect x="{x:.1f}" y="{y}" width="{width:.1f}" height="{height}" rx="{height / 2}" '
+            f'fill="none" stroke="{t.ACCENT}" stroke-opacity="0.4"/>',
+            f'<circle class="pulse" cx="{dot_x:.1f}" cy="{center_y}" r="4" fill="{t.ACCENT}"/>',
             f'<path fill="{t.ACCENT}" d="{label.d}"/>',
         )
     )
 
 
 def copy_block() -> str:
-    left = t.PANEL_PADDING
-    baseline = 148
-    name = outline(NAME, x=left, y=baseline, size=104, weight=600, tracking=-0.03)
+    right = t.PANEL_WIDTH - t.PANEL_PADDING
+    first = outline(DESCRIPTION[0], x=COPY_X, y=146, size=33, tracking=-0.01)
+    second = outline(DESCRIPTION[1], x=COPY_X, y=190, size=33, tracking=-0.01)
+    if COPY_X + max(first.width, second.width) > right:
+        raise ValueError("The description overflows the panel.")
     return "".join(
         (
-            text_path(EYEBROW, fill=t.ON_ACCENT_MUTED, x=left, y=48, size=19, family="mono", weight=600, tracking=0.08),
-            f'<path fill="{t.ON_ACCENT}" d="{name.d}"/>',
-            status_pill(left + name.width + 30, baseline),
-            text_path(DESCRIPTION[0], fill=t.ON_ACCENT, x=left, y=200, size=29, weight=500, tracking=-0.01),
-            text_path(DESCRIPTION[1], fill=t.ON_ACCENT, x=left, y=240, size=29, weight=500, tracking=-0.01),
+            text_path(EYEBROW, fill=t.TEXT_MUTED, x=COPY_X, y=87, size=19, family="mono", weight=500, tracking=0.08),
+            status_pill(right, 80),
+            f'<path fill="{t.TEXT}" d="{first.d}"/>',
+            f'<path fill="{t.TEXT}" d="{second.d}"/>',
         )
     )
 
 
 def build() -> str:
     width = t.PANEL_WIDTH
-    cx, cy = RING_CENTER
-    label = f"{NAME}: {' '.join(DESCRIPTION)} {SITE_LABEL.capitalize()}."
+    glow_x = TILE_X + TILE_SIZE / 2
+    glow_y = HEIGHT / 2
+    label = f"Ova: {' '.join(DESCRIPTION)} {SITE_LABEL.capitalize()}."
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {HEIGHT}" width="{width}" height="{HEIGHT}" role="img" aria-label="{label}">
 <title>{label}</title>
 <style>
-.ring{{transform-origin:{cx}px {cy}px;animation:turn 90s linear infinite}}
-.pulse{{animation:pulse 1.8s ease-in-out infinite alternate}}
-@keyframes turn{{to{{transform:rotate(360deg)}}}}
-@keyframes pulse{{to{{opacity:.3}}}}
-@media (prefers-reduced-motion:reduce){{.ring,.pulse{{animation:none}}}}
+.letter{{animation:ripple 6s ease-in-out infinite}}
+.glow{{animation:breathe 6s ease-in-out infinite alternate}}
+.pulse{{animation:fade 2.4s ease-in-out infinite alternate}}
+@keyframes ripple{{0%,50%,100%{{transform:translateY(0)}}18%{{transform:translateY(-16px)}}}}
+@keyframes breathe{{to{{opacity:.55}}}}
+@keyframes fade{{to{{opacity:.35}}}}
+@media (prefers-reduced-motion:reduce){{.letter,.glow,.pulse{{animation:none}}}}
 </style>
-<rect width="{width}" height="{HEIGHT}" rx="{t.PANEL_RADIUS}" fill="{t.ACCENT}"/>
-{ring()}
+<defs>
+<linearGradient id="tile" x1="0" y1="0.15" x2="1" y2="0"><stop stop-color="{t.OVA_TILE_START}"/><stop offset="1" stop-color="{t.OVA_TILE_END}"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="{t.ACCENT}" stop-opacity="0.18"/><stop offset="0.45" stop-color="{t.ACCENT}" stop-opacity="0.07"/><stop offset="1" stop-color="{t.ACCENT}" stop-opacity="0"/></radialGradient>
+<clipPath id="panel"><rect width="{width}" height="{HEIGHT}" rx="{t.PANEL_RADIUS}"/></clipPath>
+</defs>
+<g clip-path="url(#panel)">
+<rect width="{width}" height="{HEIGHT}" fill="{t.BACKGROUND}"/>
+<circle class="glow" cx="{glow_x}" cy="{glow_y}" r="300" fill="url(#glow)"/>
+{logo_tile()}
 {copy_block()}
+</g>
+<rect x="0.5" y="0.5" width="{width - 1}" height="{HEIGHT - 1}" rx="{t.PANEL_RADIUS}" fill="none" stroke="{t.BORDER}"/>
 </svg>
 """
 
