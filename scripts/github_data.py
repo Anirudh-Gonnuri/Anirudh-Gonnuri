@@ -30,7 +30,7 @@ query ($cursor: String) {
       pageInfo { hasNextPage endCursor }
       nodes {
         languages(first: 20, orderBy: {field: SIZE, direction: DESC}) {
-          edges { size node { name } }
+          edges { size node { name color } }
         }
       }
     }
@@ -43,6 +43,7 @@ query ($cursor: String) {
 class Language:
     name: str
     share: float
+    colour: str | None = None
 
 
 @dataclass(frozen=True)
@@ -86,15 +87,19 @@ def summarise(viewer: dict, repositories: list[dict]) -> Stats:
     )
 
     sizes: Counter[str] = Counter()
+    colours: dict[str, str | None] = {}
     for repository in repositories:
         for edge in repository["languages"]["edges"]:
             if edge["node"]["name"] not in EXCLUDED_LANGUAGES:
                 sizes[edge["node"]["name"]] += edge["size"]
+                colours[edge["node"]["name"]] = edge["node"].get("color")
 
     total = sum(sizes.values())
     ranked = sorted(sizes.items(), key=lambda item: (-item[1], item[0]))
     languages = tuple(
-        Language(name, size / total) for name, size in ranked if size / total >= MIN_LANGUAGE_SHARE
+        Language(name, size / total, colours[name])
+        for name, size in ranked
+        if size / total >= MIN_LANGUAGE_SHARE
     )
     return Stats(
         total_contributions=calendar["totalContributions"],

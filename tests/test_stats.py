@@ -27,7 +27,7 @@ def viewer(weeks: list[list[tuple[str, int]]], total: int = 0, repositories: int
 
 
 def repository(**sizes: int) -> dict:
-    return {"languages": {"edges": [{"size": s, "node": {"name": n}} for n, s in sizes.items()]}}
+    return {"languages": {"edges": [{"size": s, "node": {"name": n, "color": "#123456"}} for n, s in sizes.items()]}}
 
 
 class SummariseTests(unittest.TestCase):
@@ -48,6 +48,10 @@ class SummariseTests(unittest.TestCase):
     def test_languages_under_the_minimum_share_are_dropped(self) -> None:
         stats = summarise(viewer([]), [repository(Go=995, C=5)])
         self.assertEqual([l.name for l in stats.languages], ["Go"])
+
+    def test_each_language_keeps_its_github_colour(self) -> None:
+        stats = summarise(viewer([]), [repository(Go=1)])
+        self.assertEqual(stats.languages[0].colour, "#123456")
 
     def test_tied_languages_have_a_stable_order(self) -> None:
         stats = summarise(viewer([]), [repository(Zig=50, Ada=50)])

@@ -154,7 +154,7 @@ def _language_row(language: Language, x: float, y: float, column_width: float, l
         (
             text_path(language.name, fill=t.TEXT, x=x, y=y + 3, size=23),
             f'<rect x="{track_x}" y="{bar_y}" width="{track_width}" height="{bar_height}" rx="5" fill="{HEAT_RAMP[0]}"/>',
-            f'<rect x="{track_x}" y="{bar_y}" width="{bar_width:.1f}" height="{bar_height}" rx="5" fill="{t.ACCENT}"/>',
+            f'<rect x="{track_x}" y="{bar_y}" width="{bar_width:.1f}" height="{bar_height}" rx="5" fill="{language.colour or t.ACCENT}"/>',
             f'<path fill="{t.TEXT_MUTED}" d="{value.d}"/>',
         )
     )
