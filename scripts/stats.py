@@ -19,7 +19,7 @@ LANGUAGES_HEIGHT = 288
 TOP_LANGUAGES = 8
 
 # One hue, brightening with magnitude: on a dark card, more is lighter.
-HEAT_RAMP = ("#17171b", "#1f3460", "#33548f", "#5379c8", t.ACCENT)
+HEAT_RAMP = ("#17171b", "#4d1b33", "#8a2c55", "#c73b72", t.ACCENT)
 
 GRID_WIDTH = t.PANEL_WIDTH - 2 * t.PANEL_PADDING
 GRID_TOP = 228
