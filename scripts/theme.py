@@ -21,9 +21,9 @@ TEXT_MUTED = "#a2a2a9"
 TEXT_FAINT = "#6e6e76"
 
 # Accent
-ACCENT = "#f0a8c2"
-ACCENT_SHADE_LIGHT = "#c27f99"
-ACCENT_SHADE_DARK = "#8c5870"
+ACCENT = "#7fa8ff"
+ACCENT_SHADE_LIGHT = "#5a80d0"
+ACCENT_SHADE_DARK = "#3e5a9c"
 
 # Ova's brand, sampled from its app icon
 OVA_TILE_START = "#fee4ec"
