@@ -43,8 +43,8 @@ COLUMNS = (
     ),
     Column(
         "CURRENTLY",
-        "Ova and Atrium",
-        ("A cycle-tracking app, and a", "hub for my automations"),
+        "Ova and CortexEdu",
+        ("A cycle-tracking app and a", "classroom participation app"),
         x=868,
         width=340,
     ),

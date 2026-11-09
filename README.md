@@ -2,7 +2,7 @@
 
 <img src="assets/ova.svg" width="100%" alt="Ova: a PCOS-focused cycle tracker that treats irregularity as the default, not the exception. Site coming soon." />
 
-<img src="assets/about.svg" width="100%" alt="Studying an MCA at CHRIST (Deemed to be University), Central Campus, Bengaluru. Joining DataNeurus in January 2027. Currently working on Ova, a cycle-tracking app, and Atrium, a hub for my automations." />
+<img src="assets/about.svg" width="100%" alt="Studying an MCA at CHRIST (Deemed to be University), Central Campus, Bengaluru. Joining DataNeurus in January 2027. Currently working on Ova, a cycle-tracking app, and CortexEdu, a classroom participation app." />
 
 <!-- Each row must stay on one line: whitespace between two 50% images would wrap them. -->
 <img src="assets/projects/ova.svg" width="50%" alt="Ova: cycle tracking built for PCOS. Team project." /><img src="assets/projects/cortexedu.svg" width="50%" alt="CortexEdu: tracks classroom participation in real time and automates attendance marking. Team project." />
