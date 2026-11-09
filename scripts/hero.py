@@ -24,6 +24,13 @@ HEIGHTS = (
     (1, 2, 1, 1, 1),
 )
 SLOT = (2, 2)
+# A few blocks carry the colours of the projects below.
+TINTED_TOPS = {
+    (0, 3): "#00add8",
+    (3, 0): "#f9b72f",
+    (1, 0): "#c77dd1",
+    (4, 1): "#57a654",
+}
 HOVER_Z = 3.1
 
 UNIT = 38
@@ -74,7 +81,8 @@ def cuboid(x: int, y: int, z0: float, z1: float, top: str, left: str, right: str
 
 
 def column(x: int, y: int, height: int) -> str:
-    parts = [cuboid(x, y, 0, height, t.FACE_TOP, t.FACE_LEFT, t.FACE_RIGHT, t.FACE_EDGE)]
+    top = TINTED_TOPS.get((x, y), t.FACE_TOP)
+    parts = [cuboid(x, y, 0, height, top, t.FACE_LEFT, t.FACE_RIGHT, t.FACE_EDGE)]
     x1, y1 = x + 1, y + 1
     for z in range(1, height):
         parts.append(seam((x, y1, z), (x1, y1, z)))
