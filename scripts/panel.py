@@ -14,8 +14,16 @@ def dark_panel(label: str, height: int, body: str) -> str:
 """
 
 
+def arrow(x: float, y: float, colour: str, size: float = 15) -> str:
+    """A north-east arrow whose bounding box starts at ``(x, y)``."""
+    return (
+        f'<path d="M{x} {y + size}L{x + size} {y}M{x + 3} {y}H{x + size}V{y + size - 3}" fill="none" '
+        f'stroke="{colour}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    )
+
+
 def write_asset(name: str, svg: str) -> None:
-    t.ASSETS.mkdir(exist_ok=True)
     path = t.ASSETS / name
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(svg, encoding="utf-8", newline="\n")
     print(f"wrote {path} ({path.stat().st_size / 1024:.1f} KiB)")

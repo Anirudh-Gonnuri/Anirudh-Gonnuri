@@ -4,7 +4,7 @@ A README can only make a whole image clickable, so each link needs its own image
 """
 
 import theme as t
-from panel import dark_panel, write_asset
+from panel import arrow, dark_panel, write_asset
 from text import outline, text_path
 
 HEIGHT = 104
@@ -22,15 +22,6 @@ def badge(x: float) -> str:
     )
 
 
-def arrow(x: float, y: float) -> str:
-    """A north-east arrow whose bounding box starts at ``(x, y)``."""
-    size = 15
-    return (
-        f'<path d="M{x} {y + size}L{x + size} {y}M{x + 3} {y}H{x + size}V{y + size - 3}" fill="none" '
-        f'stroke="{t.ACCENT}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
-    )
-
-
 def build() -> str:
     left = t.PANEL_PADDING
     right = t.PANEL_WIDTH - t.PANEL_PADDING
@@ -41,7 +32,7 @@ def build() -> str:
             badge(left),
             text_path("Connect on LinkedIn", fill=t.TEXT, x=left + 66, y=CENTER_Y + 10, size=29, weight=500, tracking=-0.01),
             f'<path fill="{t.TEXT_MUTED}" d="{handle.d}"/>',
-            arrow(arrow_x, CENTER_Y - 7.5),
+            arrow(arrow_x, CENTER_Y - 7.5, t.ACCENT),
         )
     )
     return dark_panel("Connect with Anirudh Gonnuri on LinkedIn", HEIGHT, body)
