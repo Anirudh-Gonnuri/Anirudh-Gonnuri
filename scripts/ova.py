@@ -31,11 +31,12 @@ DIVIDER_X = t.PANEL_PADDING + WORDMARK_WIDTH + 48
 COPY_X = DIVIDER_X + 48
 
 
-def wordmark() -> str:
+def wordmark(left: float = t.PANEL_PADDING, center_y: float = HEIGHT / 2, width: float = WORDMARK_WIDTH) -> str:
+    """Draw the logo. Letters only move on a panel whose stylesheet animates them."""
     data = json.loads(WORDMARK.read_text(encoding="utf-8"))
-    scale = WORDMARK_WIDTH / (WORDMARK_RIGHT - WORDMARK_LEFT)
-    x = t.PANEL_PADDING - WORDMARK_LEFT * scale
-    y = HEIGHT / 2 - (WORDMARK_TOP + WORDMARK_BOTTOM) / 2 * scale
+    scale = width / (WORDMARK_RIGHT - WORDMARK_LEFT)
+    x = left - WORDMARK_LEFT * scale
+    y = center_y - (WORDMARK_TOP + WORDMARK_BOTTOM) / 2 * scale
     letters = "".join(
         f'<path class="letter" style="animation-delay:{index * 0.22:.2f}s" fill-rule="evenodd" d="{d}"/>'
         for index, d in enumerate(data["letters"])
