@@ -9,4 +9,8 @@
 <a href="https://github.com/Anirudh-Gonnuri/StreamFlow"><img src="assets/projects/streamflow.svg" width="50%" alt="StreamFlow: a Kafka-inspired streaming system in Go." /></a><a href="https://github.com/Anirudh-Gonnuri/Nurdle"><img src="assets/projects/nurdle.svg" width="50%" alt="Nurdle: a daily number-guessing game with real-time multiplayer." /></a>
 <a href="https://github.com/Anirudh-Gonnuri/Amped-Adventures"><img src="assets/projects/amped-adventures.svg" width="50%" alt="Amped Adventures: a 2D puzzle-platformer built on electronics puzzles." /></a><img src="assets/projects/ova-monitor.svg" width="50%" alt="Ova Monitor: watches Ova's ML models in production, with alerts for drift and outages." />
 
+<img src="assets/activity.svg" width="100%" alt="Contribution heatmap and headline numbers for the last 12 months." />
+
+<img src="assets/languages.svg" width="100%" alt="Languages used across my repositories, ranked by code size." />
+
 <a href="https://www.linkedin.com/in/anirudh-gonnuri/"><img src="assets/linkedin.svg" width="100%" alt="Connect on LinkedIn" /></a>
