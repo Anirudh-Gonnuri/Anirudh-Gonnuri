@@ -144,7 +144,7 @@ def build() -> str:
 <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="{t.DOT}"/></pattern>
 <linearGradient id="fade"><stop offset="0.42" stop-color="#000"/><stop offset="0.8" stop-color="#fff"/></linearGradient>
 <mask id="dots-mask"><rect width="{width}" height="{HEIGHT}" fill="url(#fade)"/></mask>
-<radialGradient id="glow"><stop stop-color="{t.ACCENT}" stop-opacity="0.26"/><stop offset="1" stop-color="{t.ACCENT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="glow"><stop stop-color="{t.ACCENT}" stop-opacity="0.15"/><stop offset="1" stop-color="{t.ACCENT}" stop-opacity="0"/></radialGradient>
 <clipPath id="panel"><rect width="{width}" height="{HEIGHT}" rx="{t.PANEL_RADIUS}"/></clipPath>
 </defs>
 <g clip-path="url(#panel)">
