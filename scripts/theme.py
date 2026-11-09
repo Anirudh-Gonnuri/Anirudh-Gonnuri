@@ -24,6 +24,8 @@ TEXT_FAINT = "#6e6e76"
 ACCENT = "#c8f25a"
 ACCENT_SHADE_LIGHT = "#94b83b"
 ACCENT_SHADE_DARK = "#6a8626"
+ON_ACCENT = "#0b0b0d"
+ON_ACCENT_MUTED = "#37450f"
 
 # Isometric block faces
 FACE_TOP = "#1d1d21"
