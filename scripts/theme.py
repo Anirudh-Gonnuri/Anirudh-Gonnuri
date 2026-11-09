@@ -29,6 +29,8 @@ ACCENT_SHADE_DARK = "#3e5a9c"
 OVA_TILE_START = "#fee4ec"
 OVA_TILE_END = "#fccbc6"
 OVA_MAGENTA = "#b20066"
+OVA_INK = "#3e0021"
+OVA_INK_MUTED = "#8d0051"
 
 # Isometric block faces
 FACE_TOP = "#1d1d21"
