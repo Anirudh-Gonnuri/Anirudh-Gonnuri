@@ -1,0 +1,51 @@
+name: Update stats panels
+
+on:
+  schedule:
+    - cron: "30 0 * * *" # Daily at 06:00 IST
+  workflow_dispatch: # Adds a "Run workflow" button for manual runs
+
+# The job's built-in GITHUB_TOKEN only needs to push the regenerated images.
+permissions:
+  contents: write
+
+# A manual run overlapping the schedule must not race it to push.
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m unittest discover tests
+
+      - name: Generate panels
+        run: python scripts/stats.py
+        env:
+          # A personal token, because GITHUB_TOKEN cannot see private contributions.
+          GH_TOKEN: ${{ secrets.STATS_TOKEN }}
+
+      - name: Commit if anything changed
+        run: |
+          git add assets/activity.svg assets/languages.svg
+          if git diff --cached --quiet; then
+            echo "Panels are unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh stats panels"
+          git push
